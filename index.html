@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chờ iPhone</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: black;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            width: 90%; /* Điều chỉnh kích thước tổng thể */
+            max-width: 800px;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .clock-container {
+            position: relative;
+            width: 300px; /* Kích thước đồng hồ */
+            height: 300px;
+        }
+
+        .clock-face {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.1); /* Viền mờ */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .number {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            /* Định vị các số */
+            --angle: 0;
+            transform: rotate(var(--angle));
+            transform-origin: center;
+            top: 0;
+            left: 0;
+        }
+
+        .number span {
+            position: absolute;
+            transform: rotate(calc(var(--angle) * -1)); /* Xoay ngược số lại */
+            top: -0.4em; /* Điều chỉnh vị trí số */
+            left: 50%;
+            transform: translateX(-50%) rotate(calc(var(--angle) * -1));
+        }
+
+        .hand {
+            position: absolute;
+            background-color: white;
+            border-radius: 5px;
+            transform-origin: bottom center;
+            bottom: 50%;
+            left: 50%;
+            transform: translateX(-50%) rotate(0deg);
+        }
+
+        .hour-hand {
+            width: 6px;
+            height: 35%;
+            background-color: #eee;
+        }
+
+        .minute-hand {
+            width: 4px;
+            height: 45%;
+        }
+
+        .second-hand {
+            width: 2px;
+            height: 40%;
+            background-color: orange;
+        }
+
+        .center-dot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 10px;
+            height: 10px;
+            background-color: white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .calendar-container {
+            text-align: center;
+        }
+
+        .month {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .days-header, .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-bottom: 5px;
+        }
+
+        .days-header div {
+            font-size: 16px;
+            font-weight: bold;
+            color: #aaa;
+        }
+
+        .days div {
+            font-size: 20px;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+
+        .days div.current-day {
+            background-color: rgba(255, 0, 0, 0.7); /* Màu đỏ nổi bật */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="clock-container">
+            <div class="clock-face">
+                <div class="number" style="--angle: 30deg;"><span>1</span></div>
+                <div class="number" style="--angle: 60deg;"><span>2</span></div>
+                <div class="number" style="--angle: 90deg;"><span>3</span></div>
+                <div class="number" style="--angle: 120deg;"><span>4</span></div>
+                <div class="number" style="--angle: 150deg;"><span>5</span></div>
+                <div class="number" style="--angle: 180deg;"><span>6</span></div>
+                <div class="number" style="--angle: 210deg;"><span>7</span></div>
+                <div class="number" style="--angle: 240deg;"><span>8</span></div>
+                <div class="number" style="--angle: 270deg;"><span>9</span></div>
+                <div class="number" style="--angle: 300deg;"><span>10</span></div>
+                <div class="number" style="--angle: 330deg;"><span>11</span></div>
+                <div class="number" style="--angle: 0deg;"><span>12</span></div>
+                <div class="hand hour-hand"></div>
+                <div class="hand minute-hand"></div>
+                <div class="hand second-hand"></div>
+                <div class="center-dot"></div>
+            </div>
+        </div>
+        <div class="calendar-container">
+            <div class="month">THÁNG 1</div>
+            <div class="days-header">
+                <div>T2</div>
+                <div>T3</div>
+                <div>T4</div>
+                <div>T5</div>
+                <div>T6</div>
+                <div>T7</div>
+                <div>CN</div>
+            </div>
+            <div class="days">
+                <div></div><div></div><div></div><div></div><div>1</div><div>2</div><div>3</div>
+                <div class="current-day">4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div>
+                <div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div>
+                <div>18</div><div>19</div><div>20</div><div>21</div><div>22</div><div>23</div><div>24</div>
+                <div>25</div><div>26</div><div>27</div><div>28</div><div>29</div><div>30</div><div>31</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const hourHand = document.querySelector('.hour-hand');
+        const minuteHand = document.querySelector('.minute-hand');
+        const secondHand = document.querySelector('.second-hand');
+
+        function setClock() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+
+            const hourDegrees = ((hours / 12) * 360) + ((minutes / 60) * 30);
+            const minuteDegrees = (minutes / 60) * 360;
+            const secondDegrees = (seconds / 60) * 360;
+
+            hourHand.style.transform = `translateX(-50%) rotate(${hourDegrees}deg)`;
+            minuteHand.style.transform = `translateX(-50%) rotate(${minuteDegrees}deg)`;
+            secondHand.style.transform = `translateX(-50%) rotate(${secondDegrees}deg)`;
+        }
+
+        setInterval(setClock, 1000);
+        setClock(); // Gọi ngay khi tải trang
+    </script>
+</body>
+</html>
