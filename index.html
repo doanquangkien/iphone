@@ -19,7 +19,7 @@
 
         .container {
             display: flex;
-            width: 90%; /* Điều chỉnh kích thước tổng thể */
+            width: 90%;
             max-width: 800px;
             justify-content: space-around;
             align-items: center;
@@ -27,7 +27,7 @@
 
         .clock-container {
             position: relative;
-            width: 300px; /* Kích thước đồng hồ */
+            width: 300px;
             height: 300px;
         }
 
@@ -38,7 +38,7 @@
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            border: 2px solid rgba(255, 255, 255, 0.1); /* Viền mờ */
+            border: 2px solid rgba(255, 255, 255, 0.1);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -51,7 +51,6 @@
             text-align: center;
             width: 100%;
             height: 100%;
-            /* Định vị các số */
             --angle: 0;
             transform: rotate(var(--angle));
             transform-origin: center;
@@ -61,8 +60,8 @@
 
         .number span {
             position: absolute;
-            transform: rotate(calc(var(--angle) * -1)); /* Xoay ngược số lại */
-            top: -0.4em; /* Điều chỉnh vị trí số */
+            transform: rotate(calc(var(--angle) * -1));
+            top: -0.4em;
             left: 50%;
             transform: translateX(-50%) rotate(calc(var(--angle) * -1));
         }
@@ -131,12 +130,13 @@
         .days div {
             font-size: 20px;
             padding: 8px;
-            border-radius: 50%;
+            border-radius: 50%; /* Đảm bảo border-radius được áp dụng */
             transition: background-color 0.3s ease;
+            text-align: center; /* Đảm bảo số nằm giữa */
         }
 
         .days div.current-day {
-            background-color: rgba(255, 0, 0, 0.7); /* Màu đỏ nổi bật */
+            background-color: rgba(255, 0, 0, 0.7);
         }
     </style>
 </head>
@@ -163,7 +163,7 @@
             </div>
         </div>
         <div class="calendar-container">
-            <div class="month">THÁNG 1</div>
+            <div class="month"></div>
             <div class="days-header">
                 <div>T2</div>
                 <div>T3</div>
@@ -173,13 +173,7 @@
                 <div>T7</div>
                 <div>CN</div>
             </div>
-            <div class="days">
-                <div></div><div></div><div></div><div></div><div>1</div><div>2</div><div>3</div>
-                <div class="current-day">4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div>
-                <div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div>
-                <div>18</div><div>19</div><div>20</div><div>21</div><div>22</div><div>23</div><div>24</div>
-                <div>25</div><div>26</div><div>27</div><div>28</div><div>29</div><div>30</div><div>31</div>
-            </div>
+            <div class="days"></div>
         </div>
     </div>
 
@@ -187,6 +181,11 @@
         const hourHand = document.querySelector('.hour-hand');
         const minuteHand = document.querySelector('.minute-hand');
         const secondHand = document.querySelector('.second-hand');
+        const monthElement = document.querySelector('.month');
+        const daysContainer = document.querySelector('.days');
+
+        const monthNames = ["THÁNG 1", "THÁNG 2", "THÁNG 3", "THÁNG 4", "THÁNG 5", "THÁNG 6",
+                            "THÁNG 7", "THÁNG 8", "THÁNG 9", "THÁNG 10", "THÁNG 11", "THÁNG 12"];
 
         function setClock() {
             const now = new Date();
@@ -203,8 +202,44 @@
             secondHand.style.transform = `translateX(-50%) rotate(${secondDegrees}deg)`;
         }
 
+        function updateCalendar() {
+            const now = new Date();
+            const month = now.getMonth();
+            const year = now.getFullYear();
+            const dayOfMonth = now.getDate();
+
+            monthElement.textContent = monthNames[month];
+
+            // Lấy ngày đầu tiên của tháng
+            const firstDayOfMonth = new Date(year, month, 1);
+            const startingDayOfWeek = firstDayOfMonth.getDay(); // 0 (CN) - 6 (T7)
+
+            // Số ngày trong tháng
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            daysContainer.innerHTML = ''; // Xóa các ngày cũ
+
+            // Tạo các ô trống cho đến ngày đầu tiên của tháng
+            for (let i = 0; i < (startingDayOfWeek === 0 ? 6 : startingDayOfWeek - 1); i++) {
+                const emptyDiv = document.createElement('div');
+                daysContainer.appendChild(emptyDiv);
+            }
+
+            // Tạo các ô cho các ngày trong tháng
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayDiv = document.createElement('div');
+                dayDiv.textContent = day;
+                if (day === dayOfMonth) {
+                    dayDiv.classList.add('current-day');
+                }
+                daysContainer.appendChild(dayDiv);
+            }
+        }
+
         setInterval(setClock, 1000);
         setClock(); // Gọi ngay khi tải trang
+
+        updateCalendar();
     </script>
 </body>
 </html>
